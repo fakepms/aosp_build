@@ -130,6 +130,14 @@ function check_product()
         echo "Couldn't locate the top of the tree.  Try setting TOP." >&2
         return
     fi
+
+    if (echo -n $1 | grep -q -e "^qd_") ; then
+       QD_BUILD=$(echo -n $1 | sed -e 's/^qd_//g')
+    else
+       QD_BUILD=
+    fi
+    export QD_BUILD
+
         TARGET_PRODUCT=$1 \
         TARGET_BUILD_VARIANT= \
         TARGET_BUILD_TYPE= \
