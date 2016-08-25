@@ -263,7 +263,7 @@ def LoadInfoDict(input_file, input_dir=None):
     d["fstab"] = None
   else:
     d["fstab"] = LoadRecoveryFSTab(read_helper, d["fstab_version"],
-                                   d.get("system_root_image", False))
+                                   d.get("system_root_image", False), d["device_type"])
   d["build.prop"] = LoadBuildProp(read_helper)
   return d
 
@@ -286,7 +286,7 @@ def LoadDictionaryFromLines(lines):
       d[name] = value
   return d
 
-def LoadRecoveryFSTab(read_helper, fstab_version, system_root_image=False):
+def LoadRecoveryFSTab(read_helper, fstab_version, system_root_image=False, type):
   class Partition(object):
     def __init__(self, mount_point, fs_type, device, length, device2, context):
       self.mount_point = mount_point
