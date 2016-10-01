@@ -24,7 +24,6 @@ PRODUCT_PACKAGES += \
     BasicDreams \
     BlockedNumberProvider \
     Browser \
-    Calculator \
     Calendar \
     CalendarProvider \
     CaptivePortalLogin \

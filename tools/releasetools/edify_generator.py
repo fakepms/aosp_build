@@ -133,8 +133,8 @@ class EdifyGenerator(object):
   def AssertDevice(self, device):
     """Assert that the device identifier is the given string."""
     cmd = ('assert(' +
-           ' || '.join(['getprop("ro.product.device") == "%s"' % i
-                         for i in device.split(",")]) +
+           ' || '.join(['getprop("ro.product.device") == "%s" || getprop("ro.build.product") == "%s"'
+                         % (i, i) for i in device.split(",")]) +
            ' || abort("E%d: This package is for device: %s; ' +
            'this device is " + getprop("ro.product.device") + ".");' +
            ');') % (common.ErrorCode.DEVICE_MISMATCH, device)
@@ -358,6 +358,10 @@ class EdifyGenerator(object):
         self.script.append(
             'write_raw_image(package_extract_file("%(fn)s"), "%(device)s");'
             % args)
+      elif partition_type == "OSIP":
+        self.script.append(
+            'write_osip_image(package_extract_file("%(fn)s"), "%(device)s");'
+            % args)
       elif partition_type == "EMMC":
         if mapfn:
           args["map"] = mapfn
@@ -375,10 +379,10 @@ class EdifyGenerator(object):
     if not self.info.get("use_set_metadata", False):
       self.script.append('set_perm(%d, %d, 0%o, "%s");' % (uid, gid, mode, fn))
     else:
-      if capabilities is None:
-        capabilities = "0x0"
-      cmd = 'set_metadata("%s", "uid", %d, "gid", %d, "mode", 0%o, ' \
-          '"capabilities", %s' % (fn, uid, gid, mode, capabilities)
+      cmd = 'set_metadata("%s", "uid", %d, "gid", %d, "mode", 0%o' \
+          % (fn, uid, gid, mode)
+      if capabilities is not None:
+        cmd += ', "capabilities", %s' % ( capabilities )
       if selabel is not None:
         cmd += ', "selabel", "%s"' % selabel
       cmd += ');'
@@ -391,11 +395,11 @@ class EdifyGenerator(object):
       self.script.append('set_perm_recursive(%d, %d, 0%o, 0%o, "%s");'
                          % (uid, gid, dmode, fmode, fn))
     else:
-      if capabilities is None:
-        capabilities = "0x0"
       cmd = 'set_metadata_recursive("%s", "uid", %d, "gid", %d, ' \
-          '"dmode", 0%o, "fmode", 0%o, "capabilities", %s' \
-          % (fn, uid, gid, dmode, fmode, capabilities)
+          '"dmode", 0%o, "fmode", 0%o' \
+          % (fn, uid, gid, dmode, fmode)
+      if capabilities is not None:
+        cmd += ', "capabilities", "%s"' % ( capabilities )
       if selabel is not None:
         cmd += ', "selabel", "%s"' % selabel
       cmd += ');'
