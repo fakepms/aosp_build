@@ -47,6 +47,7 @@ endif
 endif
 endif
 endif
+endif
 
 ifeq (true,$(local_arch_has_lpae))
 	# Fake an ARM compiler flag as these processors support LPAE which GCC/clang
