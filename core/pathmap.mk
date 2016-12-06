@@ -136,7 +136,11 @@ FRAMEWORKS_BASE_JAVA_SRC_DIRS := \
 #
 FRAMEWORKS_SUPPORT_SUBDIRS := \
         annotations \
-        v4 \
+        compat \
+        media-compat \
+        fragment \
+        core-ui \
+        core-utils \
         v7/gridlayout \
         v7/cardview \
         v7/mediarouter \
@@ -147,6 +151,7 @@ FRAMEWORKS_SUPPORT_SUBDIRS := \
         design \
         percent \
         recommendation \
+        transition \
         v7/preference \
         v14/preference \
         v17/preference-leanback \
@@ -177,6 +182,7 @@ FRAMEWORKS_SUPPORT_JAVA_SRC_DIRS := \
 #
 FRAMEWORKS_SUPPORT_JAVA_LIBRARIES := \
     $(foreach dir,$(FRAMEWORKS_SUPPORT_SUBDIRS),android-support-$(subst /,-,$(dir))) \
+    android-support-v4 \
     android-support-vectordrawable \
     android-support-animatedvectordrawable \
     android-support-v7-appcompat \
