@@ -131,12 +131,12 @@ function check_product()
         return
     fi
 
-    if (echo -n $1 | grep -q -e "^qd_") ; then
-       QD_BUILD=$(echo -n $1 | sed -e 's/^qd_//g')
+    if (echo -n $1 | grep -q -e "^aosp_") ; then
+       AOSP_BUILD=$(echo -n $1 | sed -e 's/^aosp_//g')
     else
-       QD_BUILD=
+       AOSP_BUILD=
     fi
-    export QD_BUILD
+    export AOSP_BUILD
 
         TARGET_PRODUCT=$1 \
         TARGET_BUILD_VARIANT= \
